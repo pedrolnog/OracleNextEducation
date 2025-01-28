@@ -1,5 +1,3 @@
-
-
 // Wrapper para texto na tela.
 function exibirTexto(tag, texto) {
     let campo = document.querySelector(tag)
@@ -19,7 +17,20 @@ function iniciarJogo() {
     document.getElementById('reiniciar').setAttribute('disabled', true);
 
     tentativas = 0;    
+
+
     numeroSecreto = gerarNumeroAleatorio(10);
+
+
+    /* Checa se o número anterior existe na lista.
+    while (numeroSecreto == historicoNumeros[historicoNumeros.length - 1]) {
+        numeroSecreto = gerarNumeroAleatorio(10);
+        console.log(numeroSecreto);
+        console.log('Número rolado');
+    }
+
+    historicoNumeros.push(numeroEscolhido); // Adiciona o número secreto ao histórico.
+    */
 }
 
 function verificarChute() {
@@ -44,8 +55,21 @@ function verificarChute() {
 }
 
 function gerarNumeroAleatorio(max) {
-    return parseInt(Math.random() * max + 1); // Gera e retorna número entre 1 e max. 
+    let numeroEscolhido = parseInt(Math.random() * max + 1); // Gera e retorna número entre 1 e max. 
+    
+    historicoNumeros.length >= 5 ? historicoNumeros.shift() : NaN; // Checa se o histórico tem mais que 5 itens e apaga o mais antigo caso sim.
+
+    // Não permite que um número gerado seja igual a um dos últimos 5 do histórico.
+    if (historicoNumeros.includes(numeroEscolhido)) {
+        return gerarNumeroAleatorio(10);
+    } else {
+        historicoNumeros.push(numeroEscolhido); // Adiciona o número secreto ao histórico.
+        console.log(historicoNumeros); // Mostra no console o histórico.
+        return numeroEscolhido;
+    }
 }
 
+let historicoNumeros = [];
 let tentativas = 0;
-let numeroSecreto = gerarNumeroAleatorio(10);
+
+iniciarJogo();
